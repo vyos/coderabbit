@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+inheritance: true
+language: en-US
+early_access: false
+tone_instructions: >
+  Concise, technical, no filler. Focus on correctness, security, performance,
+  maintainability. Cite file paths and line numbers.
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_title_placeholder: "@coderabbitai"
+  review_status: true
+  poem: false
+  collapse_walkthrough: true
+  changed_files_summary: true
+  sequence_diagrams: false
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: false
+  auto_apply_labels: false
+  suggested_reviewers: false
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - current
+      - sagitta
+      - circinus
+      - equuleus
+      - crux
+    ignore_title_keywords:
+      - WIP
+      - DO NOT MERGE
+      - Bump
+
+  path_filters:
+    - "!**/*.lock"
+    - "!**/package-lock.json"
+    - "!**/yarn.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!**/poetry.lock"
+    - "!**/uv.lock"
+    - "!**/Cargo.lock"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/node_modules/**"
+    - "!**/__pycache__/**"
+    - "!**/*.pyc"
+    - "!**/*.egg-info/**"
+    - "!**/.venv/**"
+    - "!**/.tox/**"
+    - "!**/.pytest_cache/**"
+    - "!**/htmlcov/**"
+    - "!**/coverage/**"
+    - "!**/.worktrees/**"
+    - "!**/*.snap"
+    - "!**/.terraform/**"
+    - "!**/*.tfstate*"
+    - "!**/.terragrunt-cache/**"
+
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: true
+
+  tools:
+    github-checks: { enabled: true, timeout_ms: 90000 }
+    gitleaks: { enabled: true }
+    semgrep: { enabled: true }
+    languagetool: { enabled: true, level: default, enabled_only: false }
+    markdownlint: { enabled: true }
+    yamllint: { enabled: true }
+    actionlint: { enabled: true }
+    ast-grep: { essential_rules: true }
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
+  learnings: { scope: auto }
+  issues: { scope: auto }
+  pull_requests: { scope: auto }
