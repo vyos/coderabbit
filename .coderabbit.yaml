@@ -38,6 +38,14 @@ reviews:
       - WIP
       - DO NOT MERGE
       - Bump
+    # Skip auto-review for PRs authored by these accounts. Manual
+    # `@coderabbitai review` still works if a human asks for one. The list
+    # targets bots that open mechanical PRs whose content was already
+    # reviewed upstream (e.g. Mergify cherry-picks the merge commit of an
+    # already-reviewed source PR, so re-reviewing the backport adds no
+    # signal and burns rate limit).
+    ignore_usernames:
+      - "mergify[bot]"
 
   path_filters:
     - "!**/*.lock"
