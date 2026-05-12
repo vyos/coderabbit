@@ -1,7 +1,9 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 inheritance: true
 language: en-US
-early_access: false
+# Lifted from the Org-UI Web dashboard (2026-05-12) so this YAML is the
+# canonical source of truth. Org-UI editor should be cleared after this lands.
+early_access: true
 tone_instructions: >
   Concise, technical, no filler. Focus on correctness, security, performance,
   maintainability. Cite file paths and line numbers.
@@ -24,10 +26,19 @@ reviews:
   auto_apply_labels: false
   suggested_reviewers: false
 
+  # Lifted from Org-UI Web dashboard (2026-05-12).
+  high_level_summary_in_walkthrough: true
+  review_details: true
+  fail_commit_status: true
+  estimate_code_review_effort: false
+  in_progress_fortune: false
+
   auto_review:
     enabled: true
     auto_incremental_review: true
     drafts: false
+    # Lifted from Org-UI (2026-05-12). 0 = never auto-pause after N reviewed commits.
+    auto_pause_after_reviewed_commits: 0
     base_branches:
       - current
       - sagitta
@@ -75,7 +86,13 @@ reviews:
   finishing_touches:
     docstrings:
       enabled: true
+    # Disabled at the org-wide level; per-repo `.coderabbit.yaml` files
+    # re-enable unit-test generation where the testing stack is a good fit.
+    # Lifted from Org-UI Web dashboard (2026-05-12) where it was explicitly
+    # disabled.
     unit_tests:
+      enabled: false
+    simplify:
       enabled: true
 
   tools:
@@ -87,12 +104,44 @@ reviews:
     yamllint: { enabled: true }
     actionlint: { enabled: true }
     ast-grep: { essential_rules: true }
+    # Linters disabled fleet-wide because they don't match our stack
+    # (Swift/Ruby/Rails/Ember/Shopify/CircleCI/PMD). Lifted from Org-UI
+    # Web dashboard (2026-05-12).
+    swiftlint: { enabled: false }
+    detekt: { enabled: false }
+    rubocop: { enabled: false }
+    regal: { enabled: false }
+    pmd: { enabled: false }
+    circleci: { enabled: false }
+    shopifyThemeCheck: { enabled: false }
+    brakeman: { enabled: false }
+    blinter: { enabled: false }
+    smartyLint: { enabled: false }
+    emberTemplateLint: { enabled: false }
 
 chat:
   auto_reply: true
+  # Lifted from Org-UI Web dashboard (2026-05-12). Restricts CodeRabbit
+  # chat to org members; non-members receive a deny message.
+  allow_non_org_members: false
+  integrations:
+    jira: { usage: disabled }
+    linear: { usage: disabled }
 
 knowledge_base:
   opt_out: false
   learnings: { scope: auto }
   issues: { scope: auto }
   pull_requests: { scope: auto }
+  # Lifted from Org-UI Web dashboard (2026-05-12).
+  jira: { usage: disabled }
+  linear: { usage: disabled }
+  mcp: { usage: enabled }
+  # Linked repositories provide cross-repo context to CodeRabbit. Org-specific
+  # — vyos org consumes Ansible context because the `vyos.vyos` Ansible
+  # collection lives here and references upstream ansible/ansible patterns.
+  linked_repositories:
+    - repository: ansible/ansible
+      instructions: >
+        This is the main repo for Ansible; our current repo is a collection
+        for Ansible.
