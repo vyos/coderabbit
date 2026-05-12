@@ -84,12 +84,13 @@ reviews:
     - "!**/.terragrunt-cache/**"
 
   finishing_touches:
+    # Both docstring and unit-test generation are disabled at the org-wide
+    # level; per-repo `.coderabbit.yaml` files re-enable either feature
+    # where the stack (language, testing framework, doc conventions)
+    # makes it a good fit. Fleet-wide generation is too noisy because
+    # the conventions differ across repos.
     docstrings:
-      enabled: true
-    # Disabled at the org-wide level; per-repo `.coderabbit.yaml` files
-    # re-enable unit-test generation where the testing stack is a good fit.
-    # Lifted from Org-UI Web dashboard (2026-05-12) where it was explicitly
-    # disabled.
+      enabled: false
     unit_tests:
       enabled: false
     simplify:
