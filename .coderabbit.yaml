@@ -53,10 +53,18 @@ reviews:
     # `@coderabbitai review` still works if a human asks for one. The list
     # targets bots that open mechanical PRs whose content was already
     # reviewed upstream (e.g. Mergify cherry-picks the merge commit of an
-    # already-reviewed source PR, so re-reviewing the backport adds no
-    # signal and burns rate limit).
+    # already-reviewed source PR; Netlify and Claude bots either deploy
+    # or post code that's reviewed elsewhere) — re-reviewing the port
+    # adds no signal and burns rate limit. Both the bare login and the
+    # `[bot]` suffix are listed because GitHub Apps use the `[bot]`
+    # form, while service/human accounts may share the bare name.
     ignore_usernames:
+      - "mergify"
       - "mergify[bot]"
+      - "netlify"
+      - "netlify[bot]"
+      - "claude"
+      - "claude[bot]"
 
   path_filters:
     - "!**/*.lock"
@@ -122,9 +130,13 @@ reviews:
 
 chat:
   auto_reply: true
-  # Lifted from Org-UI Web dashboard (2026-05-12). Restricts CodeRabbit
-  # chat to org members; non-members receive a deny message.
-  allow_non_org_members: false
+  # Allow non-organization members to interact with CodeRabbit in comment
+  # chat. The vyos org hosts public OSS repos where external contributors
+  # routinely open PRs; restricting chat to org members blocks them from
+  # using CodeRabbit's `@coderabbitai` commands on their own PRs. Does
+  # NOT affect auto-review eligibility — that's governed by
+  # `reviews.auto_review` (drafts, ignore_usernames, base_branches).
+  allow_non_org_members: true
   integrations:
     jira: { usage: disabled }
     linear: { usage: disabled }
