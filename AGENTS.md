@@ -2,7 +2,7 @@
 
 ## Project purpose
 
-Central [CodeRabbit](https://www.coderabbit.ai/) configuration baseline for the `vyos` (public) GitHub organisation. `.coderabbit.yaml` here is applied to every `vyos/<repo>` PR review unless the consumer carries its own `.coderabbit.yaml` with `inheritance: true`. Discovery is name-load-bearing — CodeRabbit's [central-configuration](https://docs.coderabbit.ai/configuration/central-configuration) feature looks up the literal repo name `coderabbit` in each org; renaming breaks the integration.
+Central [CodeRabbit](https://www.coderabbit.ai/) configuration baseline for the `vyos` (public) GitHub organisation. `.coderabbit.yaml` here is applied to every `vyos/<repo>` PR review by default. Per-repo overrides MUST pin `inheritance: true` to merge with this baseline (deep-merge: objects merge, arrays union, scalars child-wins); a per-repo file without `inheritance: true` fully replaces this baseline instead. Discovery is name-load-bearing — CodeRabbit's [central-configuration](https://docs.coderabbit.ai/configuration/central-configuration) feature looks up the literal repo name `coderabbit` in each org; renaming breaks the integration.
 
 Sibling — **not** twin — of [VyOS-Networks/coderabbit](https://github.com/VyOS-Networks/coderabbit). Several intentional divergences (see "Cross-repo context"); never blindly mirror changes across.
 
