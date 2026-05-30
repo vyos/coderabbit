@@ -41,6 +41,13 @@ reviews:
     auto_pause_after_reviewed_commits: 0
     base_branches:
       - current
+      # rollout 1c (T8943): additive new trunk names alongside `current`.
+      # `current` retained through the post-window bake period; removed in
+      # Task 7 cleanup once no repo defaults to it.
+      - rolling
+      - production
+      - main
+      - master
       - sagitta
       - circinus
       - equuleus
