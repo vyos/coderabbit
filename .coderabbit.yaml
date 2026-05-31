@@ -40,18 +40,10 @@ reviews:
     # Lifted from Org-UI (2026-05-12). 0 = never auto-pause after N reviewed commits.
     auto_pause_after_reviewed_commits: 0
     base_branches:
-      - current
-      # rollout 1c (T8943): additive new trunk names alongside `current`.
-      # `current` retained through the post-window bake period; removed in
-      # Task 7 cleanup once no repo defaults to it.
-      - rolling
-      - production
-      - main
-      - master
-      - sagitta
-      - circinus
-      - equuleus
-      - crux
+      # Match all branches (regex). Replaces the explicit trunk/LTS list and
+      # removes the stale post-1c `current` entry. The default branch is always
+      # reviewed; this governs which NON-default base branches get auto-review.
+      - ".*"
     ignore_title_keywords:
       - WIP
       - DO NOT MERGE
