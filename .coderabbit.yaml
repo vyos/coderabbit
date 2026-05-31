@@ -98,6 +98,27 @@ reviews:
     - "!**/*.tfstate*"
     - "!**/.terragrunt-cache/**"
 
+  # Post-rollout-1c (Phorge T8943, 2026-05-30) context for workflow reviews.
+  # Many repo AGENTS.md files still describe the pre-1c branch layout and bias
+  # CodeRabbit toward stale `@current` suggestions; this counters that.
+  path_instructions:
+    - path: ".github/workflows/**"
+      instructions: >
+        Rollout 1c (Phorge T8943, 2026-05-30) renamed default branches fleet-wide:
+        release-train repos `current` -> `rolling`; `vyos/.github` and other
+        non-release-train repos `current` -> `production`.
+        (1) Reusable-workflow refs of the form
+        `vyos/.github/.github/workflows/<name>.yml@production` are CORRECT and
+        canonical. Do NOT suggest changing `@production` to `@current`: `current`
+        is the OLD name, retained only as a temporary bake-period alias and slated
+        for removal. Any AGENTS.md still saying "reusables pinned to @current" or
+        "current (rolling)" is stale post-1c and must not drive review suggestions.
+        (2) In the mirror caller `pr-mirror-repo-sync.yml`, `permissions: contents: read`
+        is INTENTIONAL: the central reusable workflow performs all push/PR writes with
+        the `vyos-bot` GitHub App installation token (minted via the `get-token`
+        action), not the inherited `GITHUB_TOKEN`. Do NOT suggest broadening the
+        caller's `permissions` to `contents: write` / `pull-requests: write`.
+
   finishing_touches:
     # Both docstring and unit-test generation are disabled at the org-wide
     # level; per-repo `.coderabbit.yaml` files re-enable either feature
