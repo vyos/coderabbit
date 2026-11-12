@@ -55,8 +55,9 @@ reviews:
     # automatically (Mergify merge_protections block merge while present).
     # The first review may still run (label lands 1-2 s after open); every
     # later push, including the resolution, is skipped until removed.
-    # Recovery: after resolving, remove `backport-conflict` by hand, then
-    # comment `@coderabbitai review`.
+    # Recovery: `conflicts` - comment `@coderabbitai review` once Mergify
+    # drops the label; `backport-conflict` - after resolving, remove the
+    # label by hand, then comment `@coderabbitai review`.
     labels:
       - "!backport-conflict"
       - "!conflicts"
