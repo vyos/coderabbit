@@ -44,17 +44,19 @@ reviews:
       # removes the stale post-1c `current` entry. The default branch is always
       # reviewed; this governs which NON-default base branches get auto-review.
       - ".*"
-    # Skip auto-review while a PR is in a conflicted state. CodeRabbit has
-    # no native merge-conflict check; `!label` entries are exclusion
-    # filters. Both labels are owned by Mergify (central .mergify.yml):
-    # `backport-conflict` = cherry-pick conflict markers committed into a
-    # Mergify backport PR; `conflicts` = merge conflict against base
-    # (`conflict` predicate, also maintained by the central
-    # check-pr-conflicts job). Known timing gaps: the label lands 1-2 s
-    # after the PR opens and is removed seconds after a resolving push,
-    # so the very first review of a conflicted backport and the review
-    # of the resolving push may still run / be skipped respectively;
-    # `@coderabbitai review` by hand recovers the latter.
+    # Skip auto-review on conflicted PRs. CodeRabbit has no native
+    # merge-conflict check; `!label` entries are exclusion filters.
+    # `conflicts`: added AND removed automatically by Mergify's
+    # `Label conflicting pull requests` rule (PR dirty vs base) and the
+    # hourly check-pr-conflicts job. Removal follows evaluation of the
+    # resolving push, so that push is skipped.
+    # `backport-conflict`: set once by Mergify's `backport` action when
+    # cherry-pick conflict markers are committed; NEVER removed
+    # automatically (Mergify merge_protections block merge while present).
+    # The first review may still run (label lands 1-2 s after open); every
+    # later push, including the resolution, is skipped until removed.
+    # Recovery: after resolving, remove `backport-conflict` by hand, then
+    # comment `@coderabbitai review`.
     labels:
       - "!backport-conflict"
       - "!conflicts"
@@ -169,7 +171,7 @@ chat:
   # routinely open PRs; restricting chat to org members blocks them from
   # using CodeRabbit's `@coderabbitai` commands on their own PRs. Does
   # NOT affect auto-review eligibility — that's governed by
-  # `reviews.auto_review` (drafts, ignore_usernames, base_branches).
+  # `reviews.auto_review` (drafts, ignore_usernames, labels, base_branches).
   allow_non_org_members: true
   integrations:
     jira: { usage: disabled }
