@@ -44,6 +44,20 @@ reviews:
       # removes the stale post-1c `current` entry. The default branch is always
       # reviewed; this governs which NON-default base branches get auto-review.
       - ".*"
+    # Skip auto-review while a PR is in a conflicted state. CodeRabbit has
+    # no native merge-conflict check; `!label` entries are exclusion
+    # filters. Both labels are owned by Mergify (central .mergify.yml):
+    # `backport-conflict` = cherry-pick conflict markers committed into a
+    # Mergify backport PR; `conflicts` = merge conflict against base
+    # (`conflict` predicate, also maintained by the central
+    # check-pr-conflicts job). Known timing gaps: the label lands 1-2 s
+    # after the PR opens and is removed seconds after a resolving push,
+    # so the very first review of a conflicted backport and the review
+    # of the resolving push may still run / be skipped respectively;
+    # `@coderabbitai review` by hand recovers the latter.
+    labels:
+      - "!backport-conflict"
+      - "!conflicts"
     ignore_title_keywords:
       - WIP
       - DO NOT MERGE
