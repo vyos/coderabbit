@@ -50,16 +50,15 @@ reviews:
       - Bump
     # Skip auto-review for PRs authored by these accounts. Manual
     # `@coderabbitai review` still works if a human asks for one. The list
-    # targets bots that open mechanical PRs whose content was already
-    # reviewed upstream (e.g. Mergify cherry-picks the merge commit of an
-    # already-reviewed source PR; Netlify and Claude bots either deploy
-    # or post code that's reviewed elsewhere) — re-reviewing the port
-    # adds no signal and burns rate limit. Both the bare login and the
-    # `[bot]` suffix are listed because GitHub Apps use the `[bot]`
-    # form, while service/human accounts may share the bare name.
+    # targets bots whose PRs are reviewed elsewhere (Netlify deploys,
+    # Claude bots), so an auto-review adds no signal and burns rate limit.
+    # Mergify-authored backport PRs are deliberately NOT listed: the
+    # Mergify bot holds a licensed CodeRabbit seat, and a port lands on a
+    # different base branch than its source PR, so a fresh review has
+    # value. Both the bare login and the `[bot]` suffix are listed
+    # because GitHub Apps use the `[bot]` form, while service/human
+    # accounts may share the bare name.
     ignore_usernames:
-      - "mergify"
-      - "mergify[bot]"
       - "netlify"
       - "netlify[bot]"
       - "claude"
